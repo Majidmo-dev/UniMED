@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My dashboard - SUZA Medical</title>
+  <meta name="description" content="Look up your enrollment medical reports by Student ID." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' fill='%23003366'/><path d='M26 12h12v14h14v12h-14v14h-12v-14h-14v-12h14z' fill='white'/></svg>" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container nav-flex">
+      <a href="index.html" class="logo">SUZA Med</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">Menu</button>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="register.html">Register</a>
+        <a href="student.html" class="active">My records</a>
+        <a href="#" id="logoutLink" class="btn-outline">Exit</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="container">
+      <div id="studentLookupPanel" style="display:none; max-width: 520px; margin: 2rem auto;">
+        <div class="form-shell narrow" style="margin: 0;">
+          <div class="form-header">
+            <h1>View your medical records</h1>
+            <p>Enter the Student ID your doctor recorded on your enrollment check. You will see every report linked to that ID.</p>
+          </div>
+          <form id="studentLookupForm" novalidate>
+            <div class="form-section" style="margin-bottom: 1rem;">
+              <div class="field">
+                <label for="lookupId">Student ID <span class="req">*</span></label>
+                <input type="text" id="lookupId" name="lookupId" placeholder="BCS/18/23/000/TZ" required autocomplete="off" />
+                <div class="error">Please enter your Student ID.</div>
+              </div>
+            </div>
+            <button type="submit" class="btn-primary btn-block">View my records</button>
+            <p style="text-align:center; margin-top:1.2rem; color: #666; font-size:.9rem;">
+              Not registered yet? <a href="register.html">Register here</a>
+            </p>
+          </form>
+        </div>
+      </div>
+
+      <div id="studentDashboardPanel" style="display:none;">
+      <div class="dash">
+        <aside class="dash-side">
+          <div class="user">
+            <div class="avatar" id="studentAvatar">ST</div>
+            <div>
+              <div class="user-name" id="studentName">Student</div>
+              <div class="user-role" id="studentIdLabel">SUZ/-</div>
+            </div>
+          </div>
+          <nav>
+            <a href="#" class="active">My reports</a>
+          </nav>
+        </aside>
+
+        <section class="dash-main">
+          <div class="dash-head">
+            <div>
+              <h1>My medical reports</h1>
+              <div class="sub">Your enrollment health check and any follow-up reports submitted by clinic doctors.</div>
+            </div>
+          </div>
+
+          <div class="stat-grid">
+            <div class="stat-card">
+              <div class="top"></div>
+              <div class="value" id="studentTotalReports">0</div>
+              <div class="label">Total reports</div>
+            </div>
+            <div class="stat-card">
+              <div class="top"></div>
+              <div class="value" id="studentLastVisit">-</div>
+              <div class="label">Last visit</div>
+            </div>
+            <div class="stat-card">
+              <div class="top"></div>
+              <div class="value" id="studentFollowUp">-</div>
+              <div class="label">Next follow-up</div>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <div class="table-head">
+              <h3>All reports</h3>
+              <span style="font-size:.9rem;color:#666;"><span id="studentReportsCount">0</span> total</span>
+            </div>
+            <div id="studentReportsList" class="report-list">
+              <div style="padding:1.4rem;text-align:center;color:#666;">No reports yet - your enrollment medical check report will appear here once the doctor submits it.</div>
+            </div>
+          </div>
+        </section>
+      </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="logo">SUZA Med</div>
+          <p>A simple online medical checking system for the State University of Zanzibar.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Platform</h4>
+          <a href="portal.html">Portal login</a>
+          <a href="staff.html">Staff dashboard</a>
+        </div>
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <a href="#">Privacy policy</a>
+          <a href="#">Terms of use</a>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <p>Email: health@suza.ac.tz</p>
+          <p>Phone: +255 24 223 0724</p>
+          <p>Tunguu Campus, Zanzibar</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>Copyright 2026 SUZA Health - v2.0</div>
+        <div class="social-links">
+          <a href="#">Twitter</a>
+          <a href="#">Facebook</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <span id="toastMsg"></span>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student registration - SUZA Medical</title>
+  <meta name="description" content="Register as a first-year SUZA student so a doctor can file your enrollment medical check." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' fill='%23003366'/><path d='M26 12h12v14h14v12h-14v14h-12v-14h-14v-12h14z' fill='white'/></svg>" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container nav-flex">
+      <a href="index.html" class="logo">SUZA Med</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">Menu</button>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="register.html" class="active">Register</a>
+        <a href="student.html">My records</a>
+        <a href="portal.html" class="btn-outline">Staff portal</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="container">
+      <div class="form-shell narrow">
+        <div class="form-header">
+          <h1>Register for your enrollment medical check</h1>
+          <p>Fill in your details so a SUZA doctor can file your check-up report. Fields marked <span style="color:red">*</span> are required.</p>
+        </div>
+
+        <form id="publicRegisterForm" novalidate>
+          <div class="form-section">
+            <div class="form-grid">
+              <div class="field">
+                <label for="pStudentId">Student ID <span class="req">*</span></label>
+                <input type="text" id="pStudentId" name="pStudentId" placeholder="BCS/18/23/000/TZ" required autocomplete="off" />
+                <div class="error">Please enter your student ID.</div>
+              </div>
+              <div class="field">
+                <label for="pStudentName">Full name <span class="req">*</span></label>
+                <input type="text" id="pStudentName" name="pStudentName" required />
+                <div class="error">Please enter your full name.</div>
+              </div>
+              <div class="field">
+                <label for="pProgram">Program <span class="req">*</span></label>
+                <select id="pProgram" name="pProgram" required>
+                  <option value="">Select program...</option>
+                  <option>BSc Computer Science</option>
+                  <option>BSc Information Technology</option>
+                  <option>Bachelor of Education</option>
+                  <option>BA Business Administration</option>
+                  <option>BSc Environmental Sciences</option>
+                  <option>BA Kiswahili and Linguistics</option>
+                  <option>Other</option>
+                </select>
+                <div class="error">Please select your program.</div>
+              </div>
+              <div class="field">
+                <label for="pEmail">Email <span class="req">*</span></label>
+                <input type="email" id="pEmail" name="pEmail" placeholder="you@example.com" required />
+                <div class="error">Please enter a valid email address.</div>
+              </div>
+              <div class="field">
+                <label for="pPhone">Phone</label>
+                <input type="tel" id="pPhone" name="pPhone" placeholder="+255..." />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="reset" class="btn-secondary">Reset</button>
+            <button type="submit" class="btn-primary">Register</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <div class="modal-backdrop" id="successModal" role="dialog" aria-modal="true">
+    <div class="modal">
+      <div class="check"></div>
+      <h3>Registration complete</h3>
+      <p>You're on the SUZA Medical roster. A doctor will file your enrollment check-up report - you can view it any time on the student portal.</p>
+      <div class="actions">
+        <a href="student.html" class="btn-primary">View my records</a>
+        <a href="index.html" class="btn-secondary">Back to home</a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="logo">SUZA Med</div>
+          <p>A simple online medical checking system for the State University of Zanzibar.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Platform</h4>
+          <a href="portal.html">Portal login</a>
+          <a href="staff.html">Staff dashboard</a>
+        </div>
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <a href="#">Privacy policy</a>
+          <a href="#">Terms of use</a>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <p>Email: health@suza.ac.tz</p>
+          <p>Phone: +255 24 223 0724</p>
+          <p>Tunguu Campus, Zanzibar</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>Copyright 2026 SUZA Health - v2.0</div>
+        <div class="social-links">
+          <a href="#">Twitter</a>
+          <a href="#">Facebook</a>
+          <a href="#">Instagram</a>
+          <a href="#">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <span id="toastMsg"></span>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

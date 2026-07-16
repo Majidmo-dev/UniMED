@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Staff Dashboard - SUZA Medical</title>
+  <meta name="description" content="Doctor dashboard: submit enrollment medical reports and review submitted reports." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' fill='%23003366'/><path d='M26 12h12v14h14v12h-14v14h-12v-14h-14v-12h14z' fill='white'/></svg>" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container nav-flex">
+      <a href="index.html" class="logo">SUZA Med</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">Menu</button>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="register.html">Register</a>
+        <a href="staff.html" class="active">Doctor</a>
+        <a href="#" id="logoutLink" class="btn-outline">Sign out</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="container">
+      <div class="dash">
+        <aside class="dash-side">
+          <div class="user">
+            <div class="avatar">DR</div>
+            <div>
+              <div class="user-name" id="staffName">Doctor</div>
+              <div class="user-role">Clinician</div>
+            </div>
+          </div>
+          <nav>
+            <a href="#" class="active">Overview</a>
+            <a href="#registered-students">Students</a>
+            <a href="#report-form">New report</a>
+            <a href="#reports-table">Reports</a>
+          </nav>
+        </aside>
+
+        <section class="dash-main">
+          <div class="dash-head">
+            <div>
+              <h1>Doctor overview</h1>
+            </div>
+            <div style="display:flex; gap:.5rem; flex-wrap:wrap;">
+              <a href="#report-form" class="btn-primary btn-sm">New checkup</a>
+            </div>
+          </div>
+
+          <div class="stat-grid">
+            <div class="stat-card">
+              <div class="top"></div>
+              <div class="value" id="registeredStat">0</div>
+              <div class="label">Students registered</div>
+            </div>
+            <div class="stat-card">
+              <div class="top"></div>
+              <div class="value" id="reportsStat">0</div>
+              <div class="label">Reports submitted</div>
+            </div>
+          </div>
+
+          <div class="form-shell" id="report-form" style="margin: 2rem 0;">
+            <div class="form-header" style="text-align:left;">
+              <h1 style="font-size:1.5rem;">Enrollment medical check - new report</h1>
+              <p>Record the findings from the first-year enrollment check-up. When submitted, the student sees this in their portal and SUZA administration adds it to the intake's baseline health picture.</p>
+            </div>
+
+            <form id="reportForm" novalidate>
+              <div class="form-section">
+                <div class="form-section-title">Patient</div>
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="rStudentId">Student <span class="req">*</span></label>
+                    <select id="rStudentId" name="rStudentId" required>
+                      <option value="">No students registered yet</option>
+                    </select>
+                    <div class="error">Please select a registered student.</div>
+                  </div>
+                  <div class="field">
+                    <label for="rStudentName">Student name</label>
+                    <input type="text" id="rStudentName" name="rStudentName" readonly placeholder="Auto-filled from registration" />
+                  </div>
+                  <div class="field">
+                    <label for="rVisitDate">Visit date <span class="req">*</span></label>
+                    <input type="date" id="rVisitDate" name="rVisitDate" required />
+                    <div class="error">Please enter the visit date.</div>
+                  </div>
+                  <div class="field">
+                    <label for="rHospital">Hospital / clinic</label>
+                    <input type="text" id="rHospital" name="rHospital" placeholder="e.g. SUZA Clinic, Tunguu" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <div class="form-section-title">Findings</div>
+                <div class="form-grid">
+                  <div class="field full">
+                    <label for="rDiagnosis">Diagnosis <span class="req">*</span></label>
+                    <textarea id="rDiagnosis" name="rDiagnosis" placeholder="Primary diagnosis and clinical impression." required></textarea>
+                    <div class="error">Please enter a diagnosis.</div>
+                  </div>
+                  <div class="field full">
+                    <label for="rTreatment">Treatment given</label>
+                    <textarea id="rTreatment" name="rTreatment" placeholder="Procedures, injections, dressings, etc."></textarea>
+                  </div>
+                  <div class="field full">
+                    <label for="rPrescription">Prescription</label>
+                    <textarea id="rPrescription" name="rPrescription" placeholder="Medications, dosage and duration."></textarea>
+                  </div>
+                  <div class="field">
+                    <label for="rFollowUp">Follow-up date</label>
+                    <input type="date" id="rFollowUp" name="rFollowUp" />
+                  </div>
+                  <div class="field">
+                    <label for="rStatus">Status</label>
+                    <select id="rStatus" name="rStatus">
+                      <option value="Reviewed">Reviewed</option>
+                      <option value="Follow-up required">Follow-up required</option>
+                      <option value="Referred">Referred</option>
+                      <option value="Closed">Closed</option>
+                    </select>
+                  </div>
+                  <div class="field full">
+                    <label for="rNotes">Additional notes</label>
+                    <textarea id="rNotes" name="rNotes" placeholder="Optional notes for the student or administration."></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="reset" class="btn-secondary">Clear</button>
+                <button type="submit" class="btn-primary">Submit report</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="table-wrap" id="registered-students">
+            <div class="table-head">
+              <h3>Registered students</h3>
+              <span style="font-size:.9rem;color:#666;"><span id="registeredStudentsCount">0</span> total</span>
+            </div>
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Student</th>
+                    <th>ID</th>
+                    <th>Program</th>
+                    <th>Registered</th>
+                  </tr>
+                </thead>
+                <tbody id="registeredStudentsBody">
+                  <tr><td colspan="4" style="text-align:center;color:#666;padding:1.2rem;">No students registered yet.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="table-wrap" id="reports-table">
+            <div class="table-head">
+              <h3>Submitted reports</h3>
+              <span style="font-size:.9rem;color:#666;"><span id="reportsCount">0</span> total</span>
+            </div>
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Student</th>
+                    <th>ID</th>
+                    <th>Visit date</th>
+                    <th>Diagnosis</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="staffReportsBody">
+                  <tr><td colspan="5" style="text-align:center;color:#666;padding:1.2rem;">No reports submitted yet.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="logo">SUZA Med</div>
+          <p>A simple online medical checking system for the State University of Zanzibar.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Platform</h4>
+          <a href="portal.html">Portal login</a>
+          <a href="staff.html">Staff dashboard</a>
+        </div>
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <a href="#">Privacy policy</a>
+          <a href="#">Terms of use</a>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <p>Email: health@suza.ac.tz</p>
+          <p>Phone: +255 24 223 0724</p>
+          <p>Tunguu Campus, Zanzibar</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>Copyright 2026 SUZA Health - v2.0</div>
+        <div class="social-links">
+          <a href="#">Twitter</a>
+          <a href="#">Facebook</a>
+          <a href="#">Instagram</a>
+          <a href="#">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <span id="toastMsg"></span>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

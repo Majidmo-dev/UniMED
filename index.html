@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SUZA Medical - Enrollment Health Check</title>
+  <meta name="description" content="Enrollment-stage medical check for incoming first-year SUZA students." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' fill='%23003366'/><path d='M26 12h12v14h14v12h-14v14h-12v-14h-14v-12h14z' fill='white'/></svg>" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container nav-flex">
+      <a href="index.html" class="logo">SUZA Med</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">Menu</button>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html" class="active">Home</a>
+        <a href="register.html">Register</a>
+        <a href="student.html">My records</a>
+        <a href="portal.html" class="btn-outline">Portal</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="container">
+      <section class="hero">
+        <div>
+          <span class="hero-eyebrow">First-year enrollment health check</span>
+          <h1>Your enrollment <span>medical check</span> at SUZA</h1>
+          <p class="lead">Every incoming first-year student completes a medical check as part of enrollment. Attend your checkup and the university keeps a record of your baseline health.</p>
+          <div class="hero-actions">
+            <a href="register.html" class="btn-primary">Register</a>
+            <a href="student.html" class="btn-secondary">View records</a>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="stat-tile">
+            <div class="icon"></div>
+            <div>
+              <div class="value" id="weeklyCount">0</div>
+              <div class="label">Checked in this week</div>
+            </div>
+          </div>
+          <div class="stat-tile accent">
+            <div class="icon"></div>
+            <div>
+              <div class="value">98%</div>
+              <div class="label">Checkup completion rate</div>
+            </div>
+          </div>
+          <div class="stat-tile">
+            <div class="icon"></div>
+            <div>
+              <div class="value">24/7</div>
+              <div class="label">Portal access anywhere</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="logo">SUZA Med</div>
+          <p>A simple online medical checking system for the State University of Zanzibar.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Platform</h4>
+          <a href="portal.html">Portal login</a>
+          <a href="staff.html">Staff dashboard</a>
+        </div>
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <a href="#">Privacy policy</a>
+          <a href="#">Terms of use</a>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <p>Email: health@suza.ac.tz</p>
+          <p>Phone: +255 24 223 0724</p>
+          <p>Tunguu Campus, Zanzibar</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>Copyright 2026 SUZA Health - v2.0</div>
+        <div class="social-links">
+          <a href="#">Twitter</a>
+          <a href="#">Facebook</a>
+          <a href="#">Instagram</a>
+          <a href="#">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <span id="toastMsg">Welcome to SUZA Medical.</span>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

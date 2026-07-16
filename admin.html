@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Administration - SUZA Medical</title>
+  <meta name="description" content="University administrator dashboard: review, search, and export enrollment medical reports." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' fill='%23003366'/><path d='M26 12h12v14h14v12h-14v14h-12v-14h-14v-12h14z' fill='white'/></svg>" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container nav-flex">
+      <a href="index.html" class="logo">SUZA Med</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">Menu</button>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="register.html">Register</a>
+        <a href="staff.html">Doctor</a>
+        <a href="admin.html" class="active">Administration</a>
+        <a href="#" id="logoutLink" class="btn-outline">Sign out</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="container">
+      <div class="dash">
+        <aside class="dash-side">
+          <div class="user">
+            <div class="avatar">AD</div>
+            <div>
+              <div class="user-name" id="adminName">Administration</div>
+              <div class="user-role">University administrator</div>
+            </div>
+          </div>
+          <nav>
+            <a href="#reports-table" class="active">All reports</a>
+            <a href="#doctor-register">Doctors</a>
+          </nav>
+        </aside>
+
+        <section class="dash-main">
+          <div class="dash-head">
+            <div>
+              <h1>Enrollment health baseline - university overview</h1>
+              <div class="sub">All first-year enrollment medical reports and any follow-ups, across the incoming intake.</div>
+            </div>
+            <div style="display:flex; gap:.5rem; flex-wrap:wrap;">
+              <button class="btn-secondary btn-sm" id="exportReports">Export PDF</button>
+            </div>
+          </div>
+
+          <div class="stat-grid">
+            <div class="stat-card">
+              <div class="top"></div>
+              <div class="value" id="adminTotalReports">0</div>
+              <div class="label">Total reports</div>
+            </div>
+            <div class="stat-card">
+              <div class="top"></div>
+              <div class="value" id="adminUniqueStudents">0</div>
+              <div class="label">First-years seen</div>
+            </div>
+            <div class="stat-card">
+              <div class="top"></div>
+              <div class="value" id="adminFollowUps">0</div>
+              <div class="label">Follow-ups pending</div>
+            </div>
+            <div class="stat-card">
+              <div class="top"></div>
+              <div class="value" id="adminDoctorsCount">0</div>
+              <div class="label">Doctors registered</div>
+            </div>
+          </div>
+
+          <div class="form-shell" id="doctor-register" style="margin: 2rem 0;">
+            <div class="form-header" style="text-align:left;">
+              <h1 style="font-size:1.5rem;">Register a doctor</h1>
+              <p>Only registered doctors can sign in to the staff portal.</p>
+            </div>
+
+            <form id="doctorRegisterForm" novalidate>
+              <div class="form-section">
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="dDoctorId">Doctor ID <span class="req">*</span></label>
+                    <input type="text" id="dDoctorId" name="dDoctorId" placeholder="SUZ/STAFF/001" required autocomplete="off" />
+                    <div class="error">Please enter the doctor ID.</div>
+                  </div>
+                  <div class="field">
+                    <label for="dDoctorName">Full name <span class="req">*</span></label>
+                    <input type="text" id="dDoctorName" name="dDoctorName" required />
+                    <div class="error">Please enter the doctor's full name.</div>
+                  </div>
+                  <div class="field">
+                    <label for="dSpecialty">Specialty</label>
+                    <input type="text" id="dSpecialty" name="dSpecialty" placeholder="e.g. General practitioner" />
+                  </div>
+                  <div class="field">
+                    <label for="dEmail">Email</label>
+                    <input type="email" id="dEmail" name="dEmail" placeholder="doctor@suza.ac.tz" />
+                  </div>
+                  <div class="field">
+                    <label for="dPhone">Phone</label>
+                    <input type="tel" id="dPhone" name="dPhone" placeholder="+255..." />
+                  </div>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="reset" class="btn-secondary">Clear</button>
+                <button type="submit" class="btn-primary">Register doctor</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="table-wrap">
+            <div class="table-head">
+              <h3>Registered doctors</h3>
+              <span style="font-size:.9rem;color:#666;"><span id="registeredDoctorsCount">0</span> total</span>
+            </div>
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Doctor</th>
+                    <th>ID</th>
+                    <th>Specialty</th>
+                    <th>Registered</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="registeredDoctorsBody">
+                  <tr><td colspan="5" style="text-align:center;color:#666;padding:1.2rem;">No doctors registered yet.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="table-wrap" id="reports-table">
+            <div class="table-head">
+              <h3>All submitted reports</h3>
+              <div style="display:flex; gap:.5rem; align-items:center;">
+                <input type="search" id="adminSearch" placeholder="Search by name, ID or diagnosis" style="padding:.5rem .8rem; border:1px solid #999; font-size:.9rem; min-width: 220px;" />
+              </div>
+            </div>
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Student</th>
+                    <th>ID</th>
+                    <th>Visit date</th>
+                    <th>Doctor</th>
+                    <th>Diagnosis</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="adminReportsBody">
+                  <tr><td colspan="7" style="text-align:center;color:#666;padding:1.2rem;">No reports yet.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="logo">SUZA Med</div>
+          <p>A simple online medical checking system for the State University of Zanzibar.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Platform</h4>
+          <a href="portal.html">Portal login</a>
+          <a href="staff.html">Staff dashboard</a>
+        </div>
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <a href="#">Privacy policy</a>
+          <a href="#">Terms of use</a>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <p>Email: health@suza.ac.tz</p>
+          <p>Phone: +255 24 223 0724</p>
+          <p>Tunguu Campus, Zanzibar</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>Copyright 2026 SUZA Health - v2.0</div>
+        <div class="social-links">
+          <a href="#">Twitter</a>
+          <a href="#">Facebook</a>
+          <a href="#">Instagram</a>
+          <a href="#">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <span id="toastMsg"></span>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
