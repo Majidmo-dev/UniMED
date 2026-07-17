@@ -1,7 +1,9 @@
 (function () {
   'use strict';
 
-  var API = '/api';
+  var API = (location.protocol.indexOf('http') === 0 && location.port === '8000')
+    ? '/api'
+    : 'http://127.0.0.1:8000/api';
   var SESSION_KEY = 'suzamed:session';
   var STUDENT_VIEW_KEY = 'suzamed:studentView';
 
@@ -328,7 +330,8 @@
         password: pw,
       }).then(function () {
         form.reset();
-        openModal('successModal');
+        showToast('Registration complete. Redirecting to home...', 'success');
+        setTimeout(function () { window.location.href = 'index.html'; }, 1200);
       }).catch(function (err) {
         var msg = (err && err.message) || 'Registration failed.';
         if (err && err.data && err.data.studentId) {
