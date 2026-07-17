@@ -7,8 +7,6 @@
   var SESSION_KEY = 'suzamed:session';
   var STUDENT_VIEW_KEY = 'suzamed:studentView';
 
-  var ADMIN_EMAIL = 'admin@suzaadmin.ac.tz';
-
   document.addEventListener('DOMContentLoaded', init);
 
   function init() {
@@ -180,27 +178,6 @@
 
     field.classList.toggle('invalid', !valid);
     return valid;
-  }
-
-  function openModal(id) {
-    var m = document.getElementById(id);
-    if (!m) return;
-    m.classList.add('show');
-    m.addEventListener('click', function (e) {
-      if (e.target === m) closeModal(id);
-    }, { once: true });
-    document.addEventListener('keydown', escClose);
-
-    function escClose(e) {
-      if (e.key === 'Escape') {
-        closeModal(id);
-        document.removeEventListener('keydown', escClose);
-      }
-    }
-  }
-  function closeModal(id) {
-    var m = document.getElementById(id);
-    if (m) m.classList.remove('show');
   }
 
   function setupPortalLogin() {
