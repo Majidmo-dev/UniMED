@@ -67,6 +67,16 @@
                 <label for="pPhone">Phone</label>
                 <input type="tel" id="pPhone" name="pPhone" placeholder="+255..." />
               </div>
+              <div class="field">
+                <label for="pPassword">Password <span class="req">*</span></label>
+                <input type="password" id="pPassword" name="pPassword" required minlength="6" autocomplete="new-password" />
+                <div class="error">Password must be at least 6 characters.</div>
+              </div>
+              <div class="field">
+                <label for="pPasswordConfirm">Confirm password <span class="req">*</span></label>
+                <input type="password" id="pPasswordConfirm" name="pPasswordConfirm" required minlength="6" autocomplete="new-password" />
+                <div class="error">Passwords must match.</div>
+              </div>
             </div>
           </div>
 
@@ -85,8 +95,7 @@
       <h3>Registration complete</h3>
       <p>You're on the SUZA Medical roster. A doctor will file your enrollment check-up report - you can view it any time on the student portal.</p>
       <div class="actions">
-        <a href="student.html" class="btn-primary">View my records</a>
-        <a href="index.html" class="btn-secondary">Back to home</a>
+        <a href="index.html" class="btn-primary">Back to home</a>
       </div>
     </div>
   </div>

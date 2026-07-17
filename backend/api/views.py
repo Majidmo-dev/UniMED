@@ -13,6 +13,7 @@ from .serializers import (
     DoctorSerializer,
     LoginSerializer,
     ReportSerializer,
+    StudentLoginSerializer,
     StudentSerializer,
     UserSerializer,
 )
@@ -56,7 +57,7 @@ class StudentViewSet(viewsets.ModelViewSet):
     lookup_url_kwarg = 'student_id'
 
     def get_permissions(self):
-        if self.action in ('create', 'retrieve', 'list'):
+        if self.action in ('create', 'retrieve', 'list', 'login'):
             return [AllowAny()]
         return [IsAdmin()]
 
@@ -68,6 +69,13 @@ class StudentViewSet(viewsets.ModelViewSet):
             raise Http404('Student not found.')
         self.check_object_permissions(self.request, obj)
         return obj
+
+    @action(detail=False, methods=['post'], url_path='login')
+    def login(self, request):
+        serializer = StudentLoginSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        student = serializer.validated_data['student']
+        return Response(StudentSerializer(student).data)
 
 
 class DoctorViewSet(viewsets.ModelViewSet):

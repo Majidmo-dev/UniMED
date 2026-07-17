@@ -38,8 +38,13 @@
                 <input type="text" id="lookupId" name="lookupId" placeholder="BCS/18/23/000/TZ" required autocomplete="off" />
                 <div class="error">Please enter your Student ID.</div>
               </div>
+              <div class="field">
+                <label for="lookupPassword">Password <span class="req">*</span></label>
+                <input type="password" id="lookupPassword" name="lookupPassword" required minlength="6" autocomplete="current-password" />
+                <div class="error">Password must be at least 6 characters.</div>
+              </div>
             </div>
-            <button type="submit" class="btn-primary btn-block">View my records</button>
+            <button type="submit" class="btn-primary btn-block">Sign in</button>
             <p style="text-align:center; margin-top:1.2rem; color: #666; font-size:.9rem;">
               Not registered yet? <a href="register.html">Register here</a>
             </p>

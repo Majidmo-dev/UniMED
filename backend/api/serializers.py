@@ -54,11 +54,37 @@ class DoctorSerializer(serializers.ModelSerializer):
 class StudentSerializer(serializers.ModelSerializer):
     studentId = serializers.CharField(source='student_id')
     studentName = serializers.CharField(source='student_name')
+    password = serializers.CharField(write_only=True, required=False, allow_blank=True, min_length=6)
     registeredAt = serializers.DateTimeField(source='registered_at', read_only=True)
 
     class Meta:
         model = Student
-        fields = ('studentId', 'studentName', 'program', 'email', 'phone', 'registeredAt')
+        fields = ('studentId', 'studentName', 'program', 'email', 'phone', 'password', 'registeredAt')
+
+    def create(self, validated_data):
+        password = validated_data.pop('password', '')
+        if not password:
+            raise serializers.ValidationError({'password': 'Password is required.'})
+        student = Student(**validated_data)
+        student.set_password(password)
+        student.save()
+        return student
+
+
+class StudentLoginSerializer(serializers.Serializer):
+    studentId = serializers.CharField()
+    password = serializers.CharField(write_only=True)
+
+    def validate(self, attrs):
+        sid = attrs['studentId'].upper()
+        try:
+            student = Student.objects.get(student_id=sid)
+        except Student.DoesNotExist:
+            raise serializers.ValidationError('Invalid Student ID or password.')
+        if not student.check_password(attrs['password']):
+            raise serializers.ValidationError('Invalid Student ID or password.')
+        attrs['student'] = student
+        return attrs
 
 
 class ReportSerializer(serializers.ModelSerializer):

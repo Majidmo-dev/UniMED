@@ -1,3 +1,4 @@
+from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -25,11 +26,18 @@ class Student(models.Model):
     program = models.CharField(max_length=120, blank=True)
     email = models.EmailField(blank=True)
     phone = models.CharField(max_length=32, blank=True)
+    password_hash = models.CharField(max_length=128, blank=True)
     registered_at = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
         self.student_id = self.student_id.upper()
         super().save(*args, **kwargs)
+
+    def set_password(self, raw_password):
+        self.password_hash = make_password(raw_password)
+
+    def check_password(self, raw_password):
+        return bool(self.password_hash) and check_password(raw_password, self.password_hash)
 
     def __str__(self):
         return f'{self.student_id} - {self.student_name}'

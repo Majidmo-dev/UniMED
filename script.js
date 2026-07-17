@@ -104,6 +104,9 @@
       .catch(function () { return null; });
   }
   function createStudent(s) { return api('POST', '/students/', s); }
+  function verifyStudent(studentId, password) {
+    return api('POST', '/students/login/', { studentId: studentId, password: password });
+  }
 
   function fetchDoctors() { return api('GET', '/doctors/'); }
   function createDoctor(d) { return api('POST', '/doctors/', d); }
@@ -298,6 +301,18 @@
         return;
       }
 
+      var pw = val('pPassword');
+      var pwc = val('pPasswordConfirm');
+      if (pw !== pwc) {
+        var confirmField = document.getElementById('pPasswordConfirm');
+        if (confirmField) {
+          var wrap = confirmField.closest('.field');
+          if (wrap) wrap.classList.add('invalid');
+        }
+        showToast('Passwords do not match.', 'error');
+        return;
+      }
+
       var id = val('pStudentId').toUpperCase();
       var submitBtn = form.querySelector('button[type="submit"]');
       var originalHtml = submitBtn.innerHTML;
@@ -310,6 +325,7 @@
         program: val('pProgram'),
         email: val('pEmail'),
         phone: val('pPhone'),
+        password: pw,
       }).then(function () {
         form.reset();
         openModal('successModal');
@@ -597,34 +613,47 @@
     form.dataset.wired = '1';
 
     var input = document.getElementById('lookupId');
-    if (input) {
-      input.addEventListener('blur', function () { validateField(input); });
-      input.addEventListener('input', function () {
-        var f = input.closest('.field');
-        if (f && f.classList.contains('invalid') && input.value.trim() !== '') {
-          validateField(input);
+    var pwInput = document.getElementById('lookupPassword');
+    [input, pwInput].forEach(function (el) {
+      if (!el) return;
+      el.addEventListener('blur', function () { validateField(el); });
+      el.addEventListener('input', function () {
+        var f = el.closest('.field');
+        if (f && f.classList.contains('invalid') && el.value.trim() !== '') {
+          validateField(el);
         }
       });
-    }
+    });
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      if (!input || !validateField(input)) {
-        showToast('Please enter your Student ID.', 'error');
+      var ok = true;
+      form.querySelectorAll('input[required]').forEach(function (el) {
+        if (!validateField(el)) ok = false;
+      });
+      if (!ok) {
+        showToast('Please enter your Student ID and password.', 'error');
         return;
       }
       var id = input.value.trim().toUpperCase();
-      Promise.all([fetchStudent(id), fetchReports(id)]).then(function (out) {
-        var registered = out[0];
-        var mine = out[1] || [];
-        if (!registered && mine.length === 0) {
-          showToast('No records found for ' + id + '. Check the ID and try again.', 'error');
-          return;
-        }
+      var pw = pwInput.value;
+
+      var submitBtn = form.querySelector('button[type="submit"]');
+      var originalHtml = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = 'Signing in...';
+
+      verifyStudent(id, pw).then(function (student) {
         setStudentViewId(id);
-        renderStudentReports(id, registered, mine);
+        renderStudentReports(id, student);
       }).catch(function (err) {
-        showToast((err && err.message) || 'Lookup failed.', 'error');
+        var msg = (err && err.status === 400)
+          ? 'Invalid Student ID or password.'
+          : ((err && err.message) || 'Sign-in failed.');
+        showToast(msg, 'error');
+      }).finally(function () {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalHtml;
       });
     });
   }
