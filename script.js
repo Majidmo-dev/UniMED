@@ -1,4 +1,3 @@
-// SUZA Medical - shared client-side (Django-backed)
 (function () {
   'use strict';
 
@@ -22,7 +21,6 @@
     setupAdminDashboard();
   }
 
-  // ---------- Session ----------
   function loadSession() {
     try {
       var raw = localStorage.getItem(SESSION_KEY);
@@ -43,7 +41,6 @@
     try { sessionStorage.removeItem(STUDENT_VIEW_KEY); } catch (e) {}
   }
 
-  // ---------- API helpers ----------
   function authHeaders() {
     var s = loadSession();
     return s && s.token ? { 'Authorization': 'Token ' + s.token } : {};
@@ -89,7 +86,6 @@
     return null;
   }
 
-  // ---------- Auth ----------
   function login(uiRole, username, password) {
     var apiRole = uiRole === 'admin' ? 'admin' : 'doctor';
     return api('POST', '/auth/login/', {
@@ -99,10 +95,9 @@
   function logout() {
     var s = loadSession();
     if (!s || !s.token) return Promise.resolve();
-    return api('POST', '/auth/logout/').catch(function () { /* ignore */ });
+    return api('POST', '/auth/logout/').catch(function () {});
   }
 
-  // ---------- Data ----------
   function fetchStudents() { return api('GET', '/students/'); }
   function fetchStudent(id) {
     return api('GET', '/students/' + encodeURIComponent(id) + '/')
@@ -126,7 +121,6 @@
     return api('DELETE', '/reports/' + encodeURIComponent(pk) + '/');
   }
 
-  // ---------- Mobile nav ----------
   function setupNavToggle() {
     var btn = document.getElementById('navToggle');
     var nav = document.getElementById('navLinks');
@@ -137,7 +131,6 @@
     });
   }
 
-  // ---------- Toast ----------
   var toastTimer;
   function showToast(msg, type) {
     var t = document.getElementById('toast');
@@ -151,7 +144,6 @@
     toastTimer = setTimeout(function () { t.classList.remove('show'); }, 3600);
   }
 
-  // ---------- Home counters (index.html) ----------
   function setupHomeCounters() {
     var weeklyEl = document.getElementById('weeklyCount');
     if (!weeklyEl) return;
@@ -185,7 +177,6 @@
     return valid;
   }
 
-  // ---------- Modal ----------
   function openModal(id) {
     var m = document.getElementById(id);
     if (!m) return;
@@ -207,7 +198,6 @@
     if (m) m.classList.remove('show');
   }
 
-  // ---------- Portal login (portal.html) ----------
   function setupPortalLogin() {
     var form = document.getElementById('loginForm');
     if (!form) return;
@@ -277,7 +267,6 @@
     });
   }
 
-  // ---------- Logout ----------
   function setupLogout() {
     var link = document.getElementById('logoutLink');
     if (!link) return;
@@ -292,7 +281,6 @@
     });
   }
 
-  // ---------- Public student registration form (register.html) ----------
   function setupPublicRegisterForm() {
     var form = document.getElementById('publicRegisterForm');
     if (!form) return;
@@ -401,7 +389,6 @@
     }
   }
 
-  // ---------- Doctor registration form (admin.html) ----------
   function setupDoctorRegistrationForm() {
     var form = document.getElementById('doctorRegisterForm');
     if (!form) return;
@@ -472,7 +459,6 @@
     }).join('');
   }
 
-  // ---------- Doctor report form (staff.html) ----------
   function setupDoctorReportForm() {
     var form = document.getElementById('reportForm');
     if (!form) return;
@@ -587,7 +573,6 @@
     }).join('');
   }
 
-  // ---------- Student view (student.html) ----------
   function setupStudentDashboard() {
     var lookupPanel = document.getElementById('studentLookupPanel');
     var dashPanel = document.getElementById('studentDashboardPanel');
@@ -703,7 +688,6 @@
     });
   }
 
-  // ---------- Admin dashboard (admin.html) ----------
   function setupAdminDashboard() {
     var body = document.getElementById('adminReportsBody');
     if (!body) return;
@@ -861,7 +845,6 @@
     }).join('');
   }
 
-  // ---------- Helpers ----------
   function reportCardHTML(r) {
     return '<div class="report-card">' +
       '<div class="rc-head">' +
